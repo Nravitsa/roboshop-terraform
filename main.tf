@@ -610,7 +610,7 @@ resource "azurerm_dns_a_record" "mongodb" {
   zone_name           = "tusharbytes.com"
   resource_group_name = "project-ecom"
   ttl                 = 10
-  records             = [azurerm_public_ip.mongodb.ip_address]
+  records             = [azurerm_network_interface.frontend.private_ip_address]
 }
 
 # CATALOGUE
@@ -619,7 +619,7 @@ resource "azurerm_dns_a_record" "catalogue" {
   zone_name           = "tusharbytes.com"
   resource_group_name = "project-ecom"
   ttl                 = 10
-  records             = [azurerm_public_ip.catalogue.ip_address]
+  records             = [azurerm_network_interface.frontend.private_ip_address]
 }
 
 # REDIS
@@ -628,7 +628,7 @@ resource "azurerm_dns_a_record" "redis" {
   zone_name           = "tusharbytes.com"
   resource_group_name = "project-ecom"
   ttl                 = 10
-  records             = [azurerm_public_ip.redis.ip_address]
+  records             = [azurerm_network_interface.frontend.private_ip_address]
 }
 
 # USER
@@ -637,7 +637,7 @@ resource "azurerm_dns_a_record" "user" {
   zone_name           = "tusharbytes.com"
   resource_group_name = "project-ecom"
   ttl                 = 10
-  records             = [azurerm_public_ip.user.ip_address]
+  records             = [azurerm_network_interface.frontend.private_ip_address]
 }
 
 # CART
@@ -646,7 +646,7 @@ resource "azurerm_dns_a_record" "cart" {
   zone_name           = "tusharbytes.com"
   resource_group_name = "project-ecom"
   ttl                 = 10
-  records             = [azurerm_public_ip.cart.ip_address]
+  records             = [azurerm_network_interface.frontend.private_ip_address]
 }
 
 # MYSQL
@@ -655,7 +655,7 @@ resource "azurerm_dns_a_record" "mysql" {
   zone_name           = "tusharbytes.com"
   resource_group_name = "project-ecom"
   ttl                 = 10
-  records             = [azurerm_public_ip.mysql.ip_address]
+  records             = [azurerm_network_interface.frontend.private_ip_address]
 }
 
 # SHIPPING
@@ -664,7 +664,7 @@ resource "azurerm_dns_a_record" "shipping" {
   zone_name           = "tusharbytes.com"
   resource_group_name = "project-ecom"
   ttl                 = 10
-  records             = [azurerm_public_ip.shipping.ip_address]
+  records             = [azurerm_network_interface.frontend.private_ip_address]
 }
 
 # RABBITMQ
@@ -673,7 +673,7 @@ resource "azurerm_dns_a_record" "rabbitmq" {
   zone_name           = "tusharbytes.com"
   resource_group_name = "project-ecom"
   ttl                 = 10
-  records             = [azurerm_public_ip.rabbitmq.ip_address]
+  records             = [azurerm_network_interface.frontend.private_ip_address]
 }
 
 # PAYMENT
@@ -682,7 +682,7 @@ resource "azurerm_dns_a_record" "payment" {
   zone_name           = "tusharbytes.com"
   resource_group_name = "project-ecom"
   ttl                 = 10
-  records             = [azurerm_public_ip.payment.ip_address]
+  records             = [azurerm_network_interface.frontend.private_ip_address]
 }
 
 # DISPATCH
@@ -691,5 +691,5 @@ resource "azurerm_dns_a_record" "dispatch" {
   zone_name           = "tusharbytes.com"
   resource_group_name = "project-ecom"
   ttl                 = 10
-  records             = [azurerm_public_ip.dispatch.ip_address]
+  records             = [azurerm_network_interface.frontend.private_ip_address]
 }
