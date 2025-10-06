@@ -27,6 +27,7 @@ resource "azurerm_network_interface" "frontend" {
     name                          = "frontend"
     subnet_id                     = "/subscriptions/838d8d5b-1157-4504-a71d-1ef48775bbe3/resourceGroups/project-ecom/providers/Microsoft.Network/virtualNetworks/main/subnets/default"
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.frontend.id
   }
 }
 

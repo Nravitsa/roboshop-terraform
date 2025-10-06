@@ -6,4 +6,4 @@ apply:
 destroy:
 	git pull
 	terraform init
-	terraform apply -auto-approve
+	terraform destroy -auto-approve
