@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    null = {
+      source  = "hashicorp/null"
+      version = "3.2.4"
+    }
+  }
+}
 resource "azurerm_public_ip" "publicip" {
   name                = var.name
   location            = var.location
@@ -57,10 +65,23 @@ resource "azurerm_virtual_machine" "vm" {
   }
 }
 
-# provisioner "local-exec" {
-#   command = "echp ${self.private_ip} >> private_ips.txt"
-# }
+resource "null_resource" "ansible" {
+  connection {
+    type    = "ssh"
+    user    = "tushar"
+    password  = "tushar@12345"
+    host      = azurerm_network_interface.privateip.private_ip_address
+  }
 
+}
+
+provisioner "remote-exec" {
+  inline = [
+    "sudo dnf install python3.12 python3.12-pip -y",
+    "sudo pip3.12 install ansible",
+    "ansible-pull -i localhost, -U https://github.com/Nravitsa/roboshop-ansible.git roboshop.yml -e app_name=${var.name} -e env=dev"
+  ]
+}
 
 
 resource "azurerm_dns_a_record" "dns_record" {
