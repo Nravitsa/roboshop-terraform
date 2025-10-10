@@ -83,6 +83,7 @@ provisioner "remote-exec" {
   ]
 }
 
+#c
 
 resource "azurerm_dns_a_record" "dns_record" {
   name                = "${var.name}-dev"
