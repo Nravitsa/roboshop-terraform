@@ -19,6 +19,12 @@ resource "azurerm_network_interface" "privateip" {
   }
 }
 
+
+resource "azurerm_network_interface_security_group_association" "nsq-attach" {
+  network_interface_id      = azurerm_network_interface.privateip.id
+  network_security_group_id = var.network_security_group_id
+}
+
 resource "azurerm_virtual_machine" "vm" {
   name                          = var.name
   location                      = var.location
@@ -51,11 +57,15 @@ resource "azurerm_virtual_machine" "vm" {
   }
 }
 
+# provisioner "local-exec" {
+#   command = "echp ${self.private_ip} >> private_ips.txt"
+# }
+
 
 
 resource "azurerm_dns_a_record" "dns_record" {
   name                = "${var.name}-dev"
-  zone_name           = "${var.zone_name}"tusharbytes.com"
+  zone_name           = "${var.zone_name}"
   resource_group_name = var.rg_name
   ttl                 = 10
   records             = [azurerm_network_interface.privateip.private_ip_address]
