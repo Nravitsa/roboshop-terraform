@@ -6,10 +6,6 @@ variable "zone_name" {
   default = "tusharbytes.com"
 }
 
-variable "location" {
-  default = "East US"
-}
-
 variable "rg_name" {
   default = "project-ecom"
 }
@@ -20,4 +16,29 @@ variable "storage_image_reference_id" {
 
 variable "network_security_group_id" {
   default = "/subscriptions/838d8d5b-1157-4504-a71d-1ef48775bbe3/resourceGroups/project-ecom/providers/Microsoft.Network/networkSecurityGroups/allow-all"
+}
+
+
+variable "databases" {
+  default = {
+    mongodb = {}
+    rabbitmq = {}
+    mysql = {}
+    redis = {}
+
+  }
+}
+
+variable "applications" {
+  default = {
+    catalogue = {}
+    user = {}
+    cart = {}
+    payment = {}
+    shipping = {}
+    dispatch = {}
+    frontend = {}
+
+
+  }
 }

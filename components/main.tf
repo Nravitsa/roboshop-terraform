@@ -8,7 +8,7 @@ terraform {
 }
 resource "azurerm_public_ip" "publicip" {
   name                = var.name
-  location            = var.location
+  location            = data.azurerm_resource_group.rg.location
   resource_group_name = var.rg_name
   allocation_method   = "Static"
 
@@ -16,7 +16,7 @@ resource "azurerm_public_ip" "publicip" {
 
 resource "azurerm_network_interface" "privateip" {
   name                = var.name
-  location            = var.location
+  location            = data.azurerm_resource_group.rg.location
   resource_group_name = var.rg_name
 
   ip_configuration {
@@ -35,7 +35,7 @@ resource "azurerm_network_interface_security_group_association" "nsq-attach" {
 
 resource "azurerm_virtual_machine" "vm" {
   name                          = var.name
-  location                      = var.location
+  location                      = data.azurerm_resource_group.rg.location
   resource_group_name           = var.rg_name
   network_interface_ids         = [azurerm_network_interface.privateip.id]
   vm_size                       = "Standard_D2s_v3"
@@ -66,29 +66,31 @@ resource "azurerm_virtual_machine" "vm" {
 }
 
 resource "null_resource" "ansible" {
+  depends_on = [
+    azurerm_virtual_machine.vm
+  ]
   connection {
-    type    = "ssh"
-    user    = "tushar"
-    password  = "tushar@12345"
-    host      = azurerm_network_interface.privateip.private_ip_address
+    type     = "ssh"
+    user     = "tushar"
+    password = "tushar@12345"
+    host     = azurerm_network_interface.privateip.private_ip_address
   }
 
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo dnf install python3.12 python3.12-pip -y",
+      "sudo pip3.12 install ansible",
+      "ansible-pull -i localhost, -U https://github.com/Nravitsa/roboshop-ansible.git roboshop.yml -e app_name=${var.name} -e env=dev"
+    ]
+  }
 }
 
-provisioner "remote-exec" {
-  inline = [
-    "sudo dnf install python3.12 python3.12-pip -y",
-    "sudo pip3.12 install ansible",
-    "ansible-pull -i localhost, -U https://github.com/Nravitsa/roboshop-ansible.git roboshop.yml -e app_name=${var.name} -e env=dev"
-  ]
-}
-
-#c
 
 resource "azurerm_dns_a_record" "dns_record" {
   name                = "${var.name}-dev"
-  zone_name           = "${var.zone_name}"
+  zone_name           = var.zone_name
   resource_group_name = var.rg_name
-  ttl                 = 10
+  ttl                 = 3
   records             = [azurerm_network_interface.privateip.private_ip_address]
 }
