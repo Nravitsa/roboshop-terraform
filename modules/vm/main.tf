@@ -1,11 +1,5 @@
-terraform {
-  required_providers {
-    null = {
-      source  = "hashicorp/null"
-      version = "3.2.4"
-    }
-  }
-}
+
+
 resource "azurerm_public_ip" "publicip" {
   name                = var.name
   location            = data.azurerm_resource_group.rg.location
